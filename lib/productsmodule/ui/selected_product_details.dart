@@ -1,5 +1,6 @@
 import 'package:blocproject/productsmodule/models/usermodel.dart';
 import 'package:blocproject/productsmodule/orders_bloc.dart';
+import 'package:blocproject/productsmodule/repos/liked_list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -68,7 +69,18 @@ class _ProductdetailsState extends State<ProductDetails> {
                         onPressed: () {
                           setState(() {
                             isLiked = !isLiked;
-                            print(isLiked); // Print the updated state
+                            // Print the updated state
+                            if(isLiked){
+                            likedList.add(widget.product!);
+                            print(likedList);}
+                            else{
+                              int itemIndex = likedList.indexOf(widget.product);
+                              likedList.removeAt(itemIndex);
+
+                            print(likedList);
+
+                            }
+
                           });
                         },
                         icon: Icon(

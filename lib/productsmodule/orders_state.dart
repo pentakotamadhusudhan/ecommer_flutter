@@ -38,5 +38,9 @@ final String error;
 OrdersErrorState({required this.error});
 }
 
-
+@immutable
+class OrderLikedProductSuccessState extends OrdersState {
+  List<OrdersModel> likeddata;
+  OrderLikedProductSuccessState({required this.likeddata});
+}
 

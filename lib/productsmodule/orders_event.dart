@@ -11,3 +11,8 @@ class SelectedProductEvent extends OrdersEvent{
   int? productId;
   SelectedProductEvent({required this.productId});
 }
+
+class LikedListClickedEvent extends OrdersEvent{
+
+
+}
