@@ -1,5 +1,5 @@
-import 'package:blocproject/orders/models/usermodel.dart';
-import 'package:blocproject/orders/orders_bloc.dart';
+import 'package:blocproject/productsmodule/models/usermodel.dart';
+import 'package:blocproject/productsmodule/orders_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 

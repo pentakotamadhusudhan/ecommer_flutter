@@ -1,10 +1,10 @@
-import 'package:blocproject/orders/orders_bloc.dart';
+import 'package:blocproject/productsmodule/orders_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:blocproject/utils/color_const.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../orders/ui/ordersui.dart';
+import '../../productsmodule/ui/productsui.dart';
 import '../../utils/text_styles.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,17 +32,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(50.0),
+      backgroundColor: ColorConst.whiteColor,
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            custome_textfield(context, empId, "Employeeid"),
+            custome_textfield(context, empId, "Name"),
             20.verticalSpace,
             custome_textfield(context, passoword, "Password"),
             20.verticalSpace,
             custome_textfield(context, mobilenumber, "Mobile Number"),
+            20.verticalSpace,
+            custome_textfield(context, mobilenumber, "Email"),
             20.verticalSpace,
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.35,
@@ -50,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => OrdersScreen()));
+                      MaterialPageRoute(builder: (context) => Productsui()));
                 },
                 child: Text(
                   "Submit",
@@ -69,17 +71,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Row custome_textfield(
+Widget custome_textfield(
     BuildContext context, TextEditingController controller, labeltext) {
-  return Row(
+  return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
         "$labeltext",
         style: TextStyleConst.labelstyle,
       ),
       SizedBox(
-        width: MediaQuery.of(context).size.width * 0.35,
+        width: MediaQuery.of(context).size.width * 0.6,
         height: 35,
         child: TextFormField(
 

@@ -1,4 +1,4 @@
-import 'package:blocproject/orders/ui/selected_product_details.dart';
+import 'package:blocproject/productsmodule/ui/selected_product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
