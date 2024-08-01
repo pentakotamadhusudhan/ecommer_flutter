@@ -78,8 +78,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      height: 100,
-                                      width: 100,
+                                      height: 120,
+                                      width: 120,
                                       child: Image.network(
                                         successState.usermodel[index].image
                                             .toString(),
@@ -89,7 +89,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     SizedBox(
                                       height: 170,
                                       width: MediaQuery.of(context).size.width *
-                                          0.8,
+                                          0.5,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -100,23 +100,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width *
-                                                0.35,
-                                            height: 30,
+                                                0.55,
+                                            height: 40,
                                             child: Text(
                                               successState
                                                   .usermodel[index].title
                                                   .toString(),
-                                              style: TextStyleConst.heading,
+                                              style: TextStyleConst.heading.copyWith(fontSize: 16),
                                               maxLines: 1,
                                               overflow: TextOverflow.fade,
                                             ),
                                           ),
-                                          SizedBox(
+                                          Container(
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.55,
-                                            height: 80,
+                                                0.6,
+                                            height: 60,
+                            
                                             child: Text(
                                               successState
                                                   .usermodel[index].description
@@ -124,68 +125,33 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               style: TextStyleConst.body
                                                   .copyWith(fontSize: 12),
                                               overflow: TextOverflow.fade,
+                                              maxLines: 3,
                                             ),
                                           ),
                                           10.verticalSpace,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child: Text(
-                                                  "\u{20B9} ${successState.usermodel[index].price.toString()}.00",
-                                                  maxLines: 3,
-                                                  style: TextStyleConst.heading,
-                                                  overflow: TextOverflow.fade,
-                                                ),
+                                          Row(children: [
+                                            SizedBox(
+                                              width: 70,
+                                              child: Text(
+                                                '\u{20B9}${successState.usermodel[
+                                                        index].price}',
+                                                style: TextStyleConst.body,
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 20.0),
-                                                child: SizedBox(
-                                                    width: 200,
-                                                    height: 40,
-                                                    child: Column(
-                                                      children: [
-                                                        // Text(
-                                                        //   "Rating  ${successState.usermodel[index].rating!.rate!.toString()}",
-                                                        //   maxLines: 3,
-                                                        //   style: TextStyleConst
-                                                        //       .heading
-                                                        //       .copyWith(
-                                                        //           fontSize: 15),
-                                                        //   overflow:
-                                                        //       TextOverflow.fade,
-                                                        // ),
-                                                        // SizedBox(
-                                                        //   height: 10,
-                                                        //   child:
-                                                        //       LinearProgressIndicator(
-                                                        //     value: successState
-                                                        //             .usermodel[
-                                                        //                 index]
-                                                        //             .rating!
-                                                        //             .rate! /
-                                                        //         10,
-                                                        //     borderRadius:
-                                                        //         BorderRadius
-                                                        //             .circular(
-                                                        //                 10),
-                                                        //     valueColor:
-                                                        //         AlwaysStoppedAnimation<
-                                                        //                 Color>(
-                                                        //             Colors
-                                                        //                 .blueAccent),
-                                                        //   ),
-                                                        // ),
-                                                      ],
-                                                    )),
-                                              )
-                                            ],
-                                          ),
-                                        ],
+                                            ),
+                                            
+                                            SizedBox(
+                                              width: 100,
+                                              height: 10,
+                                              child: LinearProgressIndicator(
+                                                borderRadius: BorderRadius.circular(10),
+                                              value: (successState.usermodel[index].rating?.rate ?? 0) / 10,
+                                              minHeight: 10,
+                                              valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+                                              backgroundColor: Colors.grey[300],
+                                            ),
+                                            )
+                                          ],)
+                                          ],
                                       ),
                                     )
                                   ],
@@ -194,12 +160,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             ),
                           ),
                           onTap: () {
+                            
                             // ordersBloc.add(SelectedProductEvent(productId: index));
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ProductDetailsScreen(
-                                        productid: index)));
+                                        productid: successState.usermodel[index].id!)));
                           },
                         ),
                       );

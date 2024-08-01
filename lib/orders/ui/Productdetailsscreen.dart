@@ -1,4 +1,4 @@
-import 'package:blocproject/orders/ui/productdetails.dart';
+import 'package:blocproject/orders/ui/selected_product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +38,7 @@ class _ProductdetailsscreenState extends State<ProductDetailsScreen> {
           if (state is OrdersLoadingState) {
             return Center(child: CircularProgressIndicator());
           } else if (state is OrdersErrorState) {
-            return Text('An error occurred: ${state.error}');
+            return Center(child: Text('An error occurred: ${state.error}'));
           } else if (state is OrderGetProductSuccess) {
             final successState = state as OrderGetProductSuccess;
             print("success state data ${successState.ordermodel!.title}");

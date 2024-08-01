@@ -1,4 +1,5 @@
 import 'package:blocproject/orders/models/usermodel.dart';
+import 'package:blocproject/orders/orders_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -15,10 +16,16 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductdetailsState extends State<ProductDetails> {
   bool isLiked = false;
+  OrdersBloc ordersBloc = OrdersBloc();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print("product details screen ${widget.product}");
+    // print("product details screen ${widget.product.image}");
     return Scaffold(
       appBar: AppBar(
         title: Text('Product Details'),
@@ -35,7 +42,7 @@ class _ProductdetailsState extends State<ProductDetails> {
                       'https://via.placeholder.com/500'),
                   fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.vertical(
+                borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(20),
                 ),
               ),
@@ -84,13 +91,6 @@ class _ProductdetailsState extends State<ProductDetails> {
                         '${widget.product.rating?.toString() ?? '0'}',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      SizedBox(width: 8.0),
-                      Text(
-                        '(${widget.product.rating?.toString() ?? '0'} reviews)',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey,
-                            ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 16.0),
@@ -117,21 +117,21 @@ class _ProductdetailsState extends State<ProductDetails> {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.35,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () {
                         var snackBar = SnackBar(
                             elevation: 0,
                             // margin: EdgeInsets.symmetric(vertical:300),
                             behavior: SnackBarBehavior.fixed,
-
-                            backgroundColor: Colors.transparent,
+                            backgroundColor: Colors.white,
                             content: AlertDialog(
                               backgroundColor: Colors.white12,
                               title: Center(
                                 child: Text(
                                   "Added to buckets",
                                   style: TextStyle(
-                                      fontSize: 28,
+                                      fontSize: 24,
                                       fontWeight: FontWeight.w800),
                                 ).animate().tint(
                                     color: Colors.green,
@@ -139,7 +139,7 @@ class _ProductdetailsState extends State<ProductDetails> {
                               ),
                               content: SizedBox(
                                 width: 400,
-                                height:20,
+                                height: 20,
                                 child: Row(
                                   children: [
                                     Icon(
@@ -149,13 +149,15 @@ class _ProductdetailsState extends State<ProductDetails> {
                                         .animate()
                                         .moveX(
                                             begin: 0,
-                                            end: 300,
+                                            end: 200,
                                             duration:
-                                                Duration(milliseconds: 900)).tint(
-                                    color: Colors.green,
-                                    duration: Duration(seconds: 1))
+                                                Duration(milliseconds: 900))
+                                        .tint(
+                                            color: Colors.green,
+                                            duration: Duration(seconds: 1))
                                         .animate()
-                                        .fadeOut(delay: Duration(milliseconds: 1300))
+                                        .fadeOut(
+                                            delay: Duration(milliseconds: 1300))
                                   ],
                                 ),
                               ),
@@ -175,12 +177,13 @@ class _ProductdetailsState extends State<ProductDetails> {
                       ),
                       child: Text(
                         'Add to bucket',
-                        style: TextStyle(fontSize: 18.0),
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.35,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () {
                         const snackBar = SnackBar(
@@ -190,6 +193,7 @@ class _ProductdetailsState extends State<ProductDetails> {
                           backgroundColor: Colors.transparent,
                           content: AwesomeSnackbarContent(
                             title: 'Ready to buy',
+                            
                             contentType: ContentType.success,
                           ),
                         );
@@ -208,7 +212,7 @@ class _ProductdetailsState extends State<ProductDetails> {
                       ),
                       child: Text(
                         'Buy',
-                        style: TextStyle(fontSize: 18.0),
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     ),
                   ),

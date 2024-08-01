@@ -7,7 +7,6 @@ import '../../utils/static_urls.dart';
 import '../models/usermodel.dart';
 
 class OrdersRepo {
-
   Future<List<OrdersModel>> fetchOrders() async {
     List<OrdersModel> userModel = [];
     try {
@@ -37,18 +36,16 @@ class OrdersRepo {
     try {
       var client = http.Client();
       var response = await client.get(
-        Uri.parse(Url.getallproducts+'/$productId'),
+        Uri.parse(Url.getallproducts + '/$productId'),
       );
       print("response------ ");
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        userModel = OrdersModel.fromJson(data);   // Correct usage of toList()
-        // print(userModel);
+        userModel = OrdersModel.fromJson(data); // Correct usage of toList()
         return userModel;
       } else {
-        // throw Exception('Failed to load users');
         return userModel;
       }
     } catch (e) {
