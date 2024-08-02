@@ -71,7 +71,8 @@ class _ProductdetailsState extends State<ProductDetails> {
                             isLiked = !isLiked;
                             // Print the updated state
                             if(isLiked){
-                            likedList.add(widget.product!);
+
+                            likedList.add(widget.product);
                             print(likedList);}
                             else{
                               int itemIndex = likedList.indexOf(widget.product);

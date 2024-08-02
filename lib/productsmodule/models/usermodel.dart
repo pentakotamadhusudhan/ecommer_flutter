@@ -16,6 +16,7 @@ class OrdersModel {
   final String? category;
   final String? image;
   final Rating? rating;
+   bool? liked;
 
   OrdersModel({
     this.id,
@@ -25,6 +26,7 @@ class OrdersModel {
     this.category,
     this.image,
     this.rating,
+     this.liked,
   });
 
   factory OrdersModel.fromJson(Map<String, dynamic> json) => OrdersModel(
@@ -34,6 +36,7 @@ class OrdersModel {
     description: json["description"],
     category: json["category"],
     image: json["image"],
+    liked: false,
     rating: json["rating"] == null ? null : Rating.fromJson(json["rating"]),
   );
 
