@@ -1,3 +1,4 @@
+import 'package:blocproject/customewidgets/custome_loaders.dart';
 import 'package:blocproject/productsmodule/models/liked_list_products_model.dart';
 import 'package:blocproject/productsmodule/orders_bloc.dart';
 import 'package:blocproject/productsmodule/ui/liked_list_screen.dart';
@@ -36,13 +37,15 @@ class _OrdersScreenState extends State<Productsui> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orders'),
+        title: const Text('My Products'),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>LikedListScrreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LikedListScrreen()));
             },
-            icon: Icon(Icons.favorite_border_outlined),
+            icon: const Icon(Icons.favorite_border_outlined),
           ),
         ],
       ),
@@ -70,7 +73,7 @@ class _OrdersScreenState extends State<Productsui> {
                             height: 200,
                             width: MediaQuery.of(context).size.width,
                             padding:
-                                EdgeInsets.only(left: 20, top: 5, bottom: 10),
+                                const EdgeInsets.only(left: 20, top: 5, bottom: 10),
                             decoration: BoxDecoration(
                                 border:
                                     Border.all(color: ColorConst.selectedcolor),
@@ -83,7 +86,7 @@ class _OrdersScreenState extends State<Productsui> {
                                   children: [
                                     SizedBox(
                                       height: 120,
-                                      width: 120,
+                                      width: 110,
                                       child: Image.network(
                                         successState.usermodel[index].image
                                             .toString(),
@@ -91,9 +94,9 @@ class _OrdersScreenState extends State<Productsui> {
                                     ),
                                     10.horizontalSpace,
                                     SizedBox(
-                                      height: 170,
+                                      height: 160,
                                       width: MediaQuery.of(context).size.width *
-                                          0.5,
+                                          0.45,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -102,15 +105,16 @@ class _OrdersScreenState extends State<Productsui> {
                                         children: [
                                           SizedBox(
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width *
+                                                    .size
+                                                    .width *
                                                 0.55,
                                             height: 40,
                                             child: Text(
                                               successState
                                                   .usermodel[index].title
                                                   .toString(),
-                                              style: TextStyleConst.heading.copyWith(fontSize: 16),
+                                              style: TextStyleConst.heading
+                                                  .copyWith(fontSize: 16),
                                               maxLines: 1,
                                               overflow: TextOverflow.fade,
                                             ),
@@ -121,7 +125,6 @@ class _OrdersScreenState extends State<Productsui> {
                                                     .width *
                                                 0.6,
                                             height: 60,
-                            
                                             child: Text(
                                               successState
                                                   .usermodel[index].description
@@ -133,29 +136,53 @@ class _OrdersScreenState extends State<Productsui> {
                                             ),
                                           ),
                                           10.verticalSpace,
-                                          Row(children: [
-                                            SizedBox(
-                                              width: 70,
-                                              child: Text(
-                                                '\u{20B9}${successState.usermodel[
-                                                        index].price}',
-                                                style: TextStyleConst.body,
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 70,
+                                                child: Text(
+                                                  '\u{20B9}${successState.usermodel[index].price}',
+                                                  style: TextStyleConst.body,
+                                                ),
                                               ),
-                                            ),
-                                            
-                                            SizedBox(
-                                              width: 100,
-                                              height: 10,
-                                              child: LinearProgressIndicator(
-                                                borderRadius: BorderRadius.circular(10),
-                                              value: (successState.usermodel[index].rating?.rate ?? 0) / 10,
-                                              minHeight: 10,
-                                              valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                                              backgroundColor: Colors.grey[300],
-                                            ),
-                                            )
-                                          ],)
-                                          ],
+                                              SizedBox(
+                                                width: 70,
+                                                height: 22,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    LinearProgressIndicator(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      value: (successState
+                                                                  .usermodel[
+                                                                      index]
+                                                                  .rating
+                                                                  ?.rate ??
+                                                              0) /
+                                                          10,
+                                                      minHeight: 8,
+                                                      valueColor:
+                                                          const AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                              Colors
+                                                                  .blueAccent),
+                                                      backgroundColor:
+                                                          Colors.grey[300],
+                                                    ),
+                                                    Text(
+                                                      "Rating ${successState.usermodel[index].rating?.rate ?? 0}/5",
+                                                      style: const TextStyle(
+                                                          fontSize: 10),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
                                       ),
                                     )
                                   ],
@@ -164,21 +191,21 @@ class _OrdersScreenState extends State<Productsui> {
                             ),
                           ),
                           onTap: () {
-                            
                             // ordersBloc.add(SelectedProductEvent(productId: index));
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ProductDetailsScreen(
-                                        productid: successState.usermodel[index].id!)));
+                                        productid: successState
+                                            .usermodel[index].id!)));
                           },
                         ),
                       );
                     }),
               );
             case OrdersLoadingState:
-              return Center(
-                child: CircularProgressIndicator(),
+              return const Center(
+                child: CustomeLoaders(),
               );
             case OrdersErrorState:
               final errorstate = state as OrdersErrorState;

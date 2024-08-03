@@ -1,8 +1,10 @@
 import 'package:blocproject/productsmodule/models/usermodel.dart';
 import 'package:blocproject/productsmodule/orders_bloc.dart';
 import 'package:blocproject/productsmodule/repos/liked_list_model.dart';
+import 'package:blocproject/utils/color_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/snackbar_const.dart';
 
@@ -18,6 +20,9 @@ class ProductDetails extends StatefulWidget {
 class _ProductdetailsState extends State<ProductDetails> {
   bool isLiked = false;
   OrdersBloc ordersBloc = OrdersBloc();
+
+  bool description_maxlines = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,23 +33,42 @@ class _ProductdetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     // print("product details screen ${widget.product.image}");
     return Scaffold(
+      backgroundColor: ColorConst.whiteColor,
       appBar: AppBar(
-        title: Text('Product Details'),
+        backgroundColor: ColorConst.whiteColor,
+        elevation: 0,
+        scrolledUnderElevation: 0.0,
+        title: const Text('Product Details'),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 300,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.product.image ??
-                      'https://via.placeholder.com/500'),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Container(
+                  height: 250,
+                  width: 250,
+                  child: Image(
+                    image: NetworkImage(widget.product.image!),
+                    fit: BoxFit.contain,
+                  ),
+                  decoration: BoxDecoration(
+                      //   image: DecorationImage(
+                      //     image: NetworkImage(widget.product.image ??
+                      //         'https://via.placeholder.com/500'),
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      color: ColorConst.whiteColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: ColorConst.grey),
+                      boxShadow: [
+                        BoxShadow(
+                            color: ColorConst.grey,
+                            blurRadius: 5,
+                            spreadRadius: 2)
+                      ]),
                 ),
               ),
             ),
@@ -70,18 +94,15 @@ class _ProductdetailsState extends State<ProductDetails> {
                           setState(() {
                             isLiked = !isLiked;
                             // Print the updated state
-                            if(isLiked){
-
-                            likedList.add(widget.product);
-                            print(likedList);}
-                            else{
+                            if (isLiked) {
+                              likedList.add(widget.product);
+                              print(likedList);
+                            } else {
                               int itemIndex = likedList.indexOf(widget.product);
                               likedList.removeAt(itemIndex);
 
-                            print(likedList);
-
+                              print(likedList);
                             }
-
                           });
                         },
                         icon: Icon(
@@ -91,22 +112,22 @@ class _ProductdetailsState extends State<ProductDetails> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 8.0),
+                  5.verticalSpace,
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: Colors.amber,
                         size: 20,
                       ),
-                      SizedBox(width: 4.0),
+                      const SizedBox(width: 4.0),
                       Text(
-                        '${widget.product.rating?.toString() ?? '0'}',
+                        '${widget.product.rating?.rate.toString() ?? 0}/5.0',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.0),
+                  10.verticalSpace,
                   Text(
                     '\$${widget.product.price?.toStringAsFixed(2) ?? '0.00'}',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -114,10 +135,17 @@ class _ProductdetailsState extends State<ProductDetails> {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    widget.product.description ?? 'No Description',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  5.verticalSpace,
+                  InkWell(
+                    onTap: () {
+                      description_maxlines =!description_maxlines;
+                      setState(() {});
+                    },
+                    child: Text(
+                      widget.product.description ?? 'No Description',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      maxLines: description_maxlines?5:3,
+                    ),
                   ),
                 ],
               ),
@@ -126,7 +154,7 @@ class _ProductdetailsState extends State<ProductDetails> {
               padding:
                   const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.35,
@@ -141,10 +169,10 @@ class _ProductdetailsState extends State<ProductDetails> {
                             content: AlertDialog(
                               backgroundColor: Colors.white12,
                               title: Center(
-                                child: Text(
-                                  "Added to buckets",
+                                child: const Text(
+                                  "Added to bucket",
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w800),
                                 ).animate().tint(
                                     color: Colors.green,
@@ -155,7 +183,7 @@ class _ProductdetailsState extends State<ProductDetails> {
                                 height: 20,
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.shopping_cart,
                                       size: 40,
                                     )
@@ -181,16 +209,16 @@ class _ProductdetailsState extends State<ProductDetails> {
                           ..showSnackBar(snackBar);
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blue,
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.teal[50],
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text(
-                        'Add to bucket',
-                        style: TextStyle(fontSize: 16.0),
+                      child: const Text(
+                        'Add to basket',
+                        style: TextStyle(fontSize: 14.0),
                       ),
                     ),
                   ),
@@ -206,7 +234,6 @@ class _ProductdetailsState extends State<ProductDetails> {
                           backgroundColor: Colors.transparent,
                           content: AwesomeSnackbarContent(
                             title: 'Ready to buy',
-                            
                             contentType: ContentType.success,
                           ),
                         );
@@ -217,13 +244,13 @@ class _ProductdetailsState extends State<ProductDetails> {
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.blue,
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        backgroundColor: Colors.orange[200],
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Buy',
                         style: TextStyle(fontSize: 16.0),
                       ),
