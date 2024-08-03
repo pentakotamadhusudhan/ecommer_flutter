@@ -40,6 +40,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   http:
   flutter_animate: ^4.5.0
+  slider_button: ^2.1.0
+
 
 dev_dependencies:
   flutter_test:
