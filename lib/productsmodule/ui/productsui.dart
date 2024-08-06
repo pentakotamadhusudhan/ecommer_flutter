@@ -1,10 +1,12 @@
 import 'package:blocproject/customewidgets/custome_loaders.dart';
 import 'package:blocproject/productsmodule/models/liked_list_products_model.dart';
 import 'package:blocproject/productsmodule/orders_bloc.dart';
+import 'package:blocproject/productsmodule/repos/trending_repo.dart';
 import 'package:blocproject/productsmodule/ui/liked_list_screen.dart';
 import 'package:blocproject/utils/color_const.dart';
 import 'package:blocproject/utils/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,18 +38,30 @@ class _OrdersScreenState extends State<Productsui> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConst.whiteColor,
       appBar: AppBar(
+        backgroundColor: ColorConst.whiteColor,
         title: const Text('My Products'),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LikedListScrreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LikedListScrreen()));
             },
             icon: const Icon(Icons.favorite_border_outlined),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          ordersBloc.add(TrendButtonClickedEvent());
+        },
+        label: Text('Trending'),
+        icon: Icon(Icons.star_border).animate().shakeX(
+            duration: Duration(seconds: 1), delay: Duration(milliseconds: 500)),
       ),
       body: BlocConsumer<OrdersBloc, OrdersState>(
         bloc: ordersBloc,
@@ -59,6 +73,119 @@ class _OrdersScreenState extends State<Productsui> {
         builder: (context, state) {
           print(state.runtimeType);
           switch (state.runtimeType) {
+            case TrendingSuccessState:
+              final successState = state as TrendingSuccessState;
+              print(successState.trendingModel.length);
+              return Container(
+                child: ListView.builder(
+                    itemCount: successState.trendingModel.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          child: Container(
+                            height: 200,
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.only(
+                                left: 20, top: 5, bottom: 10),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: ColorConst.selectedcolor),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 120,
+                                      width: 110,
+                                      child: Image.network(
+                                        successState
+                                            .trendingModel[index].images![0]
+                                            .toString(),
+                                      ),
+                                    ),
+                                    10.horizontalSpace,
+                                    SizedBox(
+                                      height: 160,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.45,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.55,
+                                            height: 40,
+                                            child: Text(
+                                              successState
+                                                  .trendingModel[index].title
+                                                  .toString(),
+                                              style: TextStyleConst.heading
+                                                  .copyWith(fontSize: 16),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.fade,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.6,
+                                            height: 60,
+                                            child: Text(
+                                              successState.trendingModel[index]
+                                                  .description
+                                                  .toString(),
+                                              style: TextStyleConst.body
+                                                  .copyWith(fontSize: 12),
+                                              overflow: TextOverflow.fade,
+                                              maxLines: 3,
+                                            ),
+                                          ),
+                                          10.verticalSpace,
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 70,
+                                                child: Text(
+                                                  overflow: TextOverflow.ellipsis,
+                                                    '\u{20B9}${successState.trendingModel[index].price}',
+                                                    style: TextStyleConst.button
+                                                        .copyWith(
+                                                            color: ColorConst
+                                                                .selectedcolor)),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            // ordersBloc.add(SelectedProductEvent(productId: index));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductDetailsScreen(
+                                        productid: successState
+                                            .trendingModel[index].id!)));
+                          },
+                        ),
+                      );
+                    }),
+              );
             case OrdersFetchingSuccessfull:
               final successState = state as OrdersFetchingSuccessfull;
               print(successState.usermodel.length);
@@ -72,8 +199,8 @@ class _OrdersScreenState extends State<Productsui> {
                           child: Container(
                             height: 200,
                             width: MediaQuery.of(context).size.width,
-                            padding:
-                                const EdgeInsets.only(left: 20, top: 5, bottom: 10),
+                            padding: const EdgeInsets.only(
+                                left: 20, top: 5, bottom: 10),
                             decoration: BoxDecoration(
                                 border:
                                     Border.all(color: ColorConst.selectedcolor),
@@ -141,9 +268,11 @@ class _OrdersScreenState extends State<Productsui> {
                                               SizedBox(
                                                 width: 70,
                                                 child: Text(
-                                                  '\u{20B9}${successState.usermodel[index].price}',
-                                                  style: TextStyleConst.body,
-                                                ),
+                                                    '\u{20B9}${successState.usermodel[index].price}',
+                                                    style: TextStyleConst.button
+                                                        .copyWith(
+                                                            color: ColorConst
+                                                                .selectedcolor)),
                                               ),
                                               SizedBox(
                                                 width: 70,

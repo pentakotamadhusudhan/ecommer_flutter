@@ -16,8 +16,8 @@ class LikedListScrreen extends StatefulWidget {
 
 class _LikedListScrreenState extends State<LikedListScrreen> {
   OrdersBloc ordersBloc = OrdersBloc();
-  double cardheight = 240;
-  bool isVisible = false;
+  double cardheight = 250;
+  bool isVisible = true;
 
   @override
   void initState() {
@@ -29,8 +29,11 @@ class _LikedListScrreenState extends State<LikedListScrreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConst.whiteColor,
       appBar: AppBar(
-        title: Text("Liked products"),
+        scrolledUnderElevation: 0,
+        backgroundColor: ColorConst.whiteColor,
+        title: const Text("Liked products"),
       ),
       body: Center(
           child: BlocConsumer<OrdersBloc, OrdersState>(
@@ -43,7 +46,7 @@ class _LikedListScrreenState extends State<LikedListScrreen> {
         builder: (context, state) {
           switch (state.runtimeType) {
             case OrdersLoadingState:
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             case OrdersErrorState:
@@ -54,160 +57,159 @@ class _LikedListScrreenState extends State<LikedListScrreen> {
             case OrderLikedProductSuccessState:
               final likeddata = state as OrderLikedProductSuccessState;
               return Center(
-                  child: ListView.builder(
-                      itemCount: likeddata.likeddata.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              if (cardheight == 240) {
-                                cardheight += 50;
-                                isVisible = true;
-                              } else {
-                                cardheight -= 50;
-                                isVisible = false;
-                              }
-                              setState(() {});
-                            },
-                            child: Container(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              alignment: Alignment.centerLeft,
-                              width: MediaQuery.of(context).size.width * 0.85,
-                              height: cardheight,
-                              decoration: BoxDecoration(
-                                  color: ColorConst.whiteColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 8,
-                                        spreadRadius: 2,
-                                        color: ColorConst.grey,
-                                        offset: Offset(2, 5))
-                                  ]),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 220,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                    itemCount: likeddata.likeddata.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            if (cardheight == 200) {
+                              cardheight += 50;
+                              isVisible = true;
+                            } else {
+                              cardheight -= 50;
+                              isVisible = false;
+                            }
+                            setState(() {});
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10,left: 5,right: 5),
+                            alignment: Alignment.centerLeft,
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            height: cardheight,
+                            decoration: BoxDecoration(
+                                color: ColorConst.whiteColor,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                      color: ColorConst.grey,
+                                      offset: Offset(2, 5))
+                                ]),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 180,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 180,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        child: Image(
+                                          image: NetworkImage(
+                                            likeddata.likeddata[index].image
+                                                .toString(),
+                                          ),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SizedBox(
                                           height: 180,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.35,
-                                          child: Image(
-                                            image: NetworkImage(
-                                              likeddata.likeddata[index].image
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.contain,
+                                              0.45,
+                                          // color: Colors.white,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                likeddata.likeddata[index].title
+                                                    .toString(),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyleConst.heading
+                                                    .copyWith(fontSize: 14),
+                                              ),
+                                              5.verticalSpace,
+                                              Text(
+                                                likeddata.likeddata[index]
+                                                    .description
+                                                    .toString(),
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              10.verticalSpace,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(" \u{20B9} " +
+                                                      likeddata.likeddata[index]
+                                                          .price
+                                                          .toString(),style: TextStyleConst.button.copyWith(color: ColorConst.selectedcolor),),
+                                                  Row(
+                                                    children: [
+                                                      const Icon(Icons.star,size: 20,),
+                                                      Text(likeddata
+                                                          .likeddata[index]
+                                                          .rating!
+                                                          .rate
+                                                          .toString(),style: TextStyle(fontSize: 12),),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            height: 180,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.55,
-                                            // color: Colors.white,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  likeddata
-                                                      .likeddata[index].title
-                                                      .toString(),
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyleConst.heading
-                                                      .copyWith(fontSize: 14),
-                                                ),
-                                                5.verticalSpace,
-                                                Text(
-                                                  likeddata.likeddata[index]
-                                                      .description
-                                                      .toString(),
-                                                  maxLines: 4,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                10.verticalSpace,
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(" \u{20B9} " +
-                                                        likeddata
-                                                            .likeddata[index]
-                                                            .price
-                                                            .toString()),
-                                                    Row(
-                                                      children: [
-                                                        Icon(Icons.star),
-                                                        Text(likeddata
-                                                            .likeddata[index]
-                                                            .rating!
-                                                            .rate
-                                                            .toString()),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
-                                  Visibility(
+                                ),
+                                Visibility(
                                     visible: isVisible,
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child:SizedBox(
-                                        height: 32,
-                                        width: MediaQuery.of(context).size.width,
-                                        child:  SliderButton(
-                                          action: () async {
-                                            ///Do something here
-                                            print("object");
-                                            return false;
-                                          },
-                                          label: Text(
-                                            "Slide to cancel Event",
-                                            style: TextStyle(
-                                                color: Color(0xff4a4a4a),
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 17),
-                                          ),
-                                          icon: Center(
-                                              child: Icon(
-                                                CupertinoIcons.bag,
-                                                color: Colors.redAccent,
-                                                size: 30.0,
-                                                semanticLabel: 'Text to announce in accessibility modes',
-                                              )),
-                                          boxShadow: BoxShadow(
-                                            color: Colors.black.withOpacity(0.3),
-                                            blurRadius: 4,
-                                          ),
-                                        )),
-                                      )
-                                    ),
-
-                                ],
-                              ),
+                                      child: SizedBox(
+                                          height: 32,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: SliderButton(
+                                            action: () async {
+                                              ///Do something here
+                                              print("object");
+                                              return false;
+                                            },
+                                            label: const Text(
+                                              "Slide to place the item",
+                                              style: TextStyle(
+                                                  color: Color(0xff4a4a4a),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 17),
+                                            ),
+                                            icon: const Center(
+                                                child: Icon(
+                                              CupertinoIcons.bag,
+                                              color: Colors.redAccent,
+                                              size: 30.0,
+                                              semanticLabel:
+                                                  'Text to announce in accessibility modes',
+                                            )),
+                                            boxShadow: BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.3),
+                                              blurRadius: 4,
+                                            ),
+                                          )),
+                                    )),
+                              ],
                             ),
                           ),
-                        );
-                      }));
+                        ),
+                      );
+                    }),
+              ));
             default:
-              return Center(child: Text("Something went wrong"));
+              return const Center(child: Text("Something went wrong"));
           }
         },
       )),

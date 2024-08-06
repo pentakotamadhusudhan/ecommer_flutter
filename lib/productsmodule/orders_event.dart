@@ -16,3 +16,7 @@ class LikedListClickedEvent extends OrdersEvent{
 
 
 }
+
+class TrendButtonClickedEvent extends OrdersEvent{
+
+}

@@ -2,6 +2,7 @@ import 'package:blocproject/productsmodule/ui/selected_product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../customewidgets/custome_loaders.dart';
 import '../orders_bloc.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -34,17 +35,17 @@ class _ProductdetailsscreenState extends State<ProductDetailsScreen> {
           // Handle side effects based on state changes
         },
         builder: (context, state) {
-          print(state);
+
           if (state is OrdersLoadingState) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CustomeLoaders());
           } else if (state is OrdersErrorState) {
             return Center(child: Text('An error occurred: ${state.error}'));
           } else if (state is OrderGetProductSuccess) {
             final successState = state as OrderGetProductSuccess;
-            print("success state data ${successState.ordermodel!.title}");
+
             return ProductDetails(product: successState.ordermodel!);
           } else {
-            return Center(child: Text('Unexpected state'));
+            return const Center(child: Text('Unexpected state'));
           }
         },
       )

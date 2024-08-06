@@ -44,3 +44,9 @@ class OrderLikedProductSuccessState extends OrdersState {
   OrderLikedProductSuccessState({required this.likeddata});
 }
 
+
+class TrendingSuccessState extends OrdersState {
+  List<TrendingModel> trendingModel;
+  TrendingSuccessState({required this.trendingModel});
+
+}
