@@ -1,9 +1,11 @@
 import 'package:blocproject/productsmodule/orders_bloc.dart';
 import 'package:blocproject/utils/color_const.dart';
 import 'package:blocproject/utils/text_styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:slider_button/slider_button.dart';
 
 class LikedListScrreen extends StatefulWidget {
   const LikedListScrreen({super.key});
@@ -14,7 +16,9 @@ class LikedListScrreen extends StatefulWidget {
 
 class _LikedListScrreenState extends State<LikedListScrreen> {
   OrdersBloc ordersBloc = OrdersBloc();
-  double cardheight = 200;
+  double cardheight = 240;
+  bool isVisible = false;
+
   @override
   void initState() {
     ordersBloc.add(LikedListClickedEvent());
@@ -57,18 +61,22 @@ class _LikedListScrreenState extends State<LikedListScrreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
                             onTap: () {
-                              cardheight += 100;
+                              if (cardheight == 240) {
+                                cardheight += 50;
+                                isVisible = true;
+                              } else {
+                                cardheight -= 50;
+                                isVisible = false;
+                              }
                               setState(() {});
                             },
                             child: Container(
                               padding: EdgeInsets.only(top: 10, bottom: 10),
                               alignment: Alignment.centerLeft,
                               width: MediaQuery.of(context).size.width * 0.85,
-                              height: 300,
+                              height: cardheight,
                               decoration: BoxDecoration(
                                   color: ColorConst.whiteColor,
-                                  // color: Colors.white,
-
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
@@ -77,77 +85,122 @@ class _LikedListScrreenState extends State<LikedListScrreen> {
                                         color: ColorConst.grey,
                                         offset: Offset(2, 5))
                                   ]),
-                              child: SizedBox(
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.35,
-                                      child: Image(
-                                        image: NetworkImage(
-                                          likeddata.likeddata[index].image
-                                              .toString(),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 220,
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 180,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.35,
+                                          child: Image(
+                                            image: NetworkImage(
+                                              likeddata.likeddata[index].image
+                                                  .toString(),
+                                            ),
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: 180,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.55,
-                                        // color: Colors.white,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              likeddata.likeddata[index].title
-                                                  .toString(),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyleConst.heading
-                                                  .copyWith(fontSize: 14),
-                                            ),
-                                            5.verticalSpace,
-                                            Text(
-                                              likeddata
-                                                  .likeddata[index].description
-                                                  .toString(),
-                                              maxLines: 4,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            10.verticalSpace,
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                            // color: Colors.white,
+                                            child: Column(
                                               children: [
-                                                Text(" \u{20B9} " +
-                                                    likeddata
-                                                        .likeddata[index].price
-                                                        .toString()),
+                                                Text(
+                                                  likeddata
+                                                      .likeddata[index].title
+                                                      .toString(),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyleConst.heading
+                                                      .copyWith(fontSize: 14),
+                                                ),
+                                                5.verticalSpace,
+                                                Text(
+                                                  likeddata.likeddata[index]
+                                                      .description
+                                                      .toString(),
+                                                  maxLines: 4,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                10.verticalSpace,
                                                 Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
-                                                    Icon(Icons.star),
-                                                    Text(likeddata
-                                                        .likeddata[index]
-                                                        .rating!
-                                                        .rate
-                                                        .toString()),
+                                                    Text(" \u{20B9} " +
+                                                        likeddata
+                                                            .likeddata[index]
+                                                            .price
+                                                            .toString()),
+                                                    Row(
+                                                      children: [
+                                                        Icon(Icons.star),
+                                                        Text(likeddata
+                                                            .likeddata[index]
+                                                            .rating!
+                                                            .rate
+                                                            .toString()),
+                                                      ],
+                                                    ),
                                                   ],
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: isVisible,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child:SizedBox(
+                                        height: 32,
+                                        width: MediaQuery.of(context).size.width,
+                                        child:  SliderButton(
+                                          action: () async {
+                                            ///Do something here
+                                            print("object");
+                                            return false;
+                                          },
+                                          label: Text(
+                                            "Slide to cancel Event",
+                                            style: TextStyle(
+                                                color: Color(0xff4a4a4a),
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 17),
+                                          ),
+                                          icon: Center(
+                                              child: Icon(
+                                                CupertinoIcons.bag,
+                                                color: Colors.redAccent,
+                                                size: 30.0,
+                                                semanticLabel: 'Text to announce in accessibility modes',
+                                              )),
+                                          boxShadow: BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            blurRadius: 4,
+                                          ),
+                                        )),
+                                      )
+                                    ),
+
+                                ],
                               ),
                             ),
                           ),
