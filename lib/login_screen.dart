@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:local_baba/app_style.dart';
 import 'package:local_baba/service/user_service.dart';
 import 'package:local_baba/user_registraion.dart' hide AppColors;
-
+import 'package:local_baba/utils/constant_string.dart';
+import 'package:local_baba/utils/constant_string.dart';
 import 'customer/customer_dashboard.dart';
 // Import your style file here
 
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: AppColors.primary,
               ),
               const SizedBox(height: 10),
-              const Text("MODA ARCANA", style: AppTextStyles.heading),
+              Text(ConstantString().APP_TITLE, style: AppTextStyles.heading),
               const Text(
                 "Welcome back to Style & Flow",
                 style: AppTextStyles.body,
@@ -149,7 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ? () {}
                     : () async {
                         // await handleLogin();
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=>CustomerDashBoardScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CustomerDashBoardScreen()));
                       },
                 style: AppButtons.primaryAction,
                 child: isLoading
