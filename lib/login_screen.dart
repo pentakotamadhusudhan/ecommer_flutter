@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:local_baba/app_style.dart';
 import 'package:local_baba/service/user_service.dart';
 import 'package:local_baba/user_registraion.dart' hide AppColors;
+
+import 'customer/customer_dashboard.dart';
 // Import your style file here
 
 class LoginScreen extends StatefulWidget {
@@ -146,7 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: isLoading
                     ? () {}
                     : () async {
-                        await handleLogin();
+                        // await handleLogin();
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>CustomerDashBoardScreen()));
                       },
                 style: AppButtons.primaryAction,
                 child: isLoading
