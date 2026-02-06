@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:local_baba/app_style.dart';
+import 'package:local_baba/app_style.dart'; // Ensure this contains your AppTheme
 import 'package:local_baba/service/user_service.dart';
 import 'package:local_baba/user_registraion.dart' hide AppColors;
 import 'package:local_baba/utils/constant_string.dart';
-import 'package:local_baba/utils/constant_string.dart';
 import 'customer/customer_dashboard.dart';
-// Import your style file here
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,152 +13,163 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Inside your LoginScreen State class
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final ApiService _apiService = ApiService();
 
   bool obscure = true;
   bool isLoading = false;
-  Future handleLogin() async {
-    setState(() {
-      isLoading = true;
-    });
-    final user = await _apiService.login(
-      _emailController.text,
-      _passController.text,
-    );
 
-    if (user != null) {
-      // Success: Navigate to Home or Show Welcome
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Welcome ${user.username}")));
-    } else {
-      // Failure
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Invalid Credentials")));
+  Future<void> handleLogin() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const CustomerDashBoardScreen()),
+    );
+    if (_emailController.text.isEmpty || _passController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
     }
-    setState(() {
-      isLoading = false;
-    });
+
+    setState(() => isLoading = true);
+
+    try {
+      final user = await _apiService.login(_emailController.text, _passController.text);
+
+      if (user != null && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const CustomerDashBoardScreen()),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Invalid Credentials")),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => isLoading = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Accessing theme data once for cleaner code
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      body: SafeArea( // Ensures content doesn't hit status bar
         child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Makes buttons full width
             children: [
-              const SizedBox(height: 80),
-              // Logo Placeholder
-              const Icon(
-                Icons.auto_awesome_mosaic,
-                size: 60,
-                color: AppColors.primary,
-              ),
-              const SizedBox(height: 10),
-              Text(ConstantString().APP_TITLE, style: AppTextStyles.heading),
-              const Text(
-                "Welcome back to Style & Flow",
-                style: AppTextStyles.body,
+              const SizedBox(height: 60),
+
+              // 1. Branding Section
+              Center(
+                child: Column(
+                  children: [
+                    const Icon(Icons.auto_awesome_mosaic, size: 60, color: AppColors.primary),
+                    const SizedBox(height: 16),
+                    Text(ConstantString().APP_TITLE, style: textTheme.displayLarge),
+                    const SizedBox(height: 8),
+                    Text("Welcome back to Style & Flow", style: textTheme.bodyMedium),
+                  ],
+                ),
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 48),
 
-              // Social Login Zone
+              // 2. Social Login Zone
               OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.apple),
                 label: const Text("Continue with Apple"),
-                style: AppButtons.socialAction,
               ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.g_mobiledata, size: 30),
                 label: const Text("Continue with Google"),
-                style: AppButtons.socialAction,
               ),
 
-              const SizedBox(height: 30),
-              const Text("OR", style: TextStyle(color: AppColors.inputBorder)),
-              const SizedBox(height: 30),
+              const SizedBox(height: 32),
 
-              // Traditional Input Fields
+              // 3. Divider
+              Row(
+                children: [
+                  Expanded(child: Divider(color: theme.dividerColor)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text("OR", style: textTheme.bodySmall),
+                  ),
+                  Expanded(child: Divider(color: theme.dividerColor)),
+                ],
+              ),
+
+              const SizedBox(height: 32),
+
+              // 4. Input Fields
               TextField(
                 controller: _emailController,
-                decoration: _inputDecoration("Email or Phone Number"),
-                style: const TextStyle(color: Colors.white),
+                keyboardType: TextInputType.emailAddress,
+                decoration: AppTheme().inputDecoration(context, "Email or Phone Number"),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: _passController,
                 obscureText: obscure,
-                decoration: _inputDecoration("Password").copyWith(
+                decoration: AppTheme().inputDecoration(context, "Password").copyWith(
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscure = !obscure;
-                      });
-                    },
-                    icon: Icon(Icons.visibility_outlined, color: Colors.grey),
+                    onPressed: () => setState(() => obscure = !obscure),
+                    icon: Icon(
+                      obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      color: theme.hintColor,
+                    ),
                   ),
                 ),
-                style: const TextStyle(color: Colors.white),
               ),
 
+              // 5. Secondary Actions
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(color: AppColors.textSecondary),
-                  ),
+                  child: const Text("Forgot Password?"),
                 ),
               ),
 
-              Align(
-                alignment: Alignment.center,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    );
-                  },
-                  child: const Text(
-                    "Create Account",
-                    style: TextStyle(color: AppColors.textSecondary),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 24),
 
-              const SizedBox(height: 20),
-
-              // Main CTA
+              // 6. Main CTA
               ElevatedButton(
-                onPressed: isLoading
-                    ? () {}
-                    : () async {
-                        // await handleLogin();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomerDashBoardScreen()));
-                      },
-                style: AppButtons.primaryAction,
+                onPressed: isLoading ? null : handleLogin,
                 child: isLoading
-                    ? CircularProgressIndicator()
+                    ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black)
+                )
                     : const Text("SIGN IN SECURELY"),
               ),
+
+              const SizedBox(height: 16),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("New here?", style: textTheme.bodyMedium),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                    },
+                    child: const Text("Create Account"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -168,20 +177,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  InputDecoration _inputDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: AppColors.textSecondary),
-      filled: true,
-      fillColor: AppColors.surface,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.inputBorder),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.primary),
-      ),
-    );
-  }
+
 }

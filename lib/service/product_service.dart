@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:local_baba/service/user_service.dart';
 
 import '../model/product_model.dart';
 
 
 class ProductService {
   // Use your machine's IP address instead of localhost if testing on a real device
-  static const String apiUrl = "http://192.168.1.6:8000/store/addproducts/";
+  static const String apiUrl = baseUrl+"/store/addproducts/";
 
-  Future<List<Product>> fetchProducts() async {
+  Future<List<ProductsModel>> fetchProducts() async {
     try {
       final response = await http.get(
         Uri.parse(apiUrl),
@@ -24,7 +25,7 @@ class ProductService {
         // Drill down into the 'data' list from your response
         final List<dynamic> productList = decodedBody['data'];
 
-        return productList.map((item) => Product.fromJson(item)).toList();
+        return productList.map((item) => ProductsModel.fromJson(item)).toList();
       } else {
         throw Exception("Failed to load products: ${response.statusCode}");
       }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:local_baba/product_screens/product_info_screen.dart';
+import 'package:local_baba/service/product_service.dart';
 import 'package:local_baba/user_registraion.dart';
+
+import '../model/product_model.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({super.key});
@@ -10,6 +13,7 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
+  final ProductService _productService = ProductService();
   Widget _buildCategoryItem(String title, IconData icon) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
@@ -25,69 +29,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
               style: const TextStyle(
                   color: AppColors.textSecondary, fontSize: 12)),
         ],
-      ),
-    );
-  }
-
-  Widget _buildProductCard() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProductInfoScreen()));
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.surface, // Matches your theme
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      'https://media.istockphoto.com/id/512907694/photo/collection-vegetables.jpg?s=612x612&w=0&k=20&c=LGPsT8tp72qkDNwRbA6kr75w1JgzoNl8uklz4B5BxJs=',
-                    ),
-                    fit: BoxFit.cover, // Ensures the image fills the container
-                  ),
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Product Name",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text("Ajio tshirt sweat shirts avalible",
-                      maxLines: 1,
-                      overflow: TextOverflow.fade,
-                      style: TextStyle(color: AppColors.textSecondary)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("\$120.00",
-                          style: TextStyle(color: AppColors.primary)),
-                      Text("\$200.00",
-                          style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 12,
-                              decoration: TextDecoration.lineThrough,
-                              decorationColor: Colors.white,
-                              decorationThickness: 2)),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
@@ -108,7 +49,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 prefixIcon:
                     const Icon(Icons.search, color: AppColors.textSecondary),
                 filled: true,
-                fillColor: AppColors.surface,
+                fillColor: Theme.of(context).cardColor,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -118,13 +59,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
           ),
 
           // 3. Category horizontal list
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text("Categories",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
+                style: Theme.of(context).textTheme.titleMedium),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -145,70 +83,263 @@ class _CustomerScreenState extends State<CustomerScreen> {
           // 4. Promo Banner
           Container(
             margin: const EdgeInsets.all(16),
-            height: 160,
             width: double.infinity,
+            // Removed fixed height to allow for text scaling, added constraints instead
+            constraints: const BoxConstraints(minHeight: 160),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius:
+                  BorderRadius.circular(20), // Slightly more modern curve
               gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [AppColors.primary, Color(0xFF8E6E5E)],
               ),
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 20,
-                  top: 40,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Summer Collection",
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold)),
-                      const Text("Get 20% off with code MODA26",
-                          style: TextStyle(fontSize: 14)),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
-                        child: const Text("Shop Now",
-                            style: TextStyle(color: Colors.white)),
-                      )
-                    ],
-                  ),
-                )
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
               ],
+            ),
+            child: ClipRRect(
+              // Clips the decorative circle
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                children: [
+                  // Background Decorative Circle
+                  Positioned(
+                    right: -50,
+                    top: -50,
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundColor: Colors.white.withOpacity(0.1),
+                    ),
+                  ),
+
+                  // Content
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Summer Collection",
+                          style: TextStyle(
+                            fontSize: 24, // Increased size
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white, // Ensure high contrast
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          "Get 20% off with code MODA26",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              "Shop Now",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 
           // 5. Product Grid Title
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text("New Arrivals",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
+                style: Theme.of(context).textTheme.titleMedium),
           ),
 
           // 6. Product Grid (Mock)
+
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return _buildProductCard();
+            padding: const EdgeInsets.all(5.0),
+            child: FutureBuilder<List<ProductsModel>>(
+              future: _productService.fetchProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError ||
+                    !snapshot.hasData ||
+                    snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text("No products found",
+                        style: TextStyle(color: Colors.white)),
+                  );
+                }
+
+                final products = snapshot.data!;
+
+                // 1. Grouping Logic (Keep this)
+                final Map<String, List<ProductsModel>> groupedProducts = {};
+                for (var product in products) {
+                  final String catName =
+                      product.category?.categoryName ?? "Other";
+                  if (!groupedProducts.containsKey(catName)) {
+                    groupedProducts[catName] = [];
+                  }
+                  groupedProducts[catName]!.add(product);
+                }
+
+                final categories = groupedProducts.keys.toList();
+
+                // 2. Use a single ListView to show categories
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics:
+                      const NeverScrollableScrollPhysics(), // Let the parent screen handle scrolling
+                  itemCount: categories.length,
+                  itemBuilder: (context, catIndex) {
+                    String categoryName = categories[catIndex];
+                    List<ProductsModel> categoryItems =
+                        groupedProducts[categoryName]!;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Category Header
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Text(
+                            categoryName.toUpperCase(),
+                            style: const TextStyle(
+                              color: Color(0xFFC5A08E),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                        // 3. GridView for products in this category
+                        SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            // physics: const NeverScrollableScrollPhysics(),
+                            itemCount: categoryItems.length,
+
+                            itemBuilder: (context, index) {
+                              final product = categoryItems[index];
+
+                              return Card(
+                                color: Theme.of(context).cardColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              const BorderRadius.vertical(
+                                                  top: Radius.circular(15)),
+                                          image: DecorationImage(
+                                            image: NetworkImage(product
+                                                    .productImage ??
+                                                'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE='),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            product.productName ?? "",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
+                                          Text(
+                                            product.description ?? "",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            width: 200,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "\$${product.price}",
+                                                  style: const TextStyle(
+                                                      color: Color(0xFFC5A08E),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Icon(
+                                                    Icons.favorite,
+                                                    // Grabs the color from your textTheme or primaryColor
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.color,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20), // Space between categories
+                      ],
+                    );
+                  },
+                );
               },
             ),
-          ),
+          )
         ],
       ),
     );

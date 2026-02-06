@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_baba/model/user_model.dart';
-
+const String baseUrl = "http://192.168.1.3:8000/";
 class ApiService {
-  static const String baseUrl = "http://192.168.1.6:8000/";
+
   static const String loginUrl = "$baseUrl/user/login/";
   static const String registrationUrl = "$baseUrl/user/register/";
 
