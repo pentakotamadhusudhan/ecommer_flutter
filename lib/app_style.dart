@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Brand Colors (Constant across themes)
-  static const Color primary = Color(0xFFC5A08E);
+  static const Color primary = Colors.teal;
 
   // Dark Theme Colors
   static const Color darkBg = Color(0xFF121212);

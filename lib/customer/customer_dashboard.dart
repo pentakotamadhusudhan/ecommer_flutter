@@ -6,6 +6,7 @@ import 'package:local_baba/product_screens/order_screens.dart';
 import 'package:local_baba/product_screens/wishlist_screen.dart';
 import 'package:local_baba/utils/constant_string.dart';
 import '../app_style.dart';
+import 'category_screen.dart';
 
 class CustomerDashBoardScreen extends StatefulWidget {
   const CustomerDashBoardScreen({super.key});
@@ -21,7 +22,7 @@ class _CustomerDashBoardScreenState extends State<CustomerDashBoardScreen> {
   // Using IndexedStack prevents the screens from re-loading every time you switch tabs
   final List<Widget> _screens = [
     const CustomerScreen(),
-    const WishlistScreen(),
+    const CategoryScreen(),
     const OrdersScreen(),
     const ProfileScreen(),
   ];
@@ -36,12 +37,13 @@ class _CustomerDashBoardScreenState extends State<CustomerDashBoardScreen> {
 
       appBar: AppBar(
         backgroundColor: theme.scaffoldBackgroundColor,
-        elevation: 0,
+        elevation: 1,
+        titleSpacing: 0,
         centerTitle: false,
-        leading: const Icon(Icons.shopify_sharp, color: AppColors.primary),
+        leading: Image(image: AssetImage("assets/images/app_logo.png",),fit: BoxFit.cover,),
         title: Text(
           ConstantString().APP_TITLE,
-          style: theme.textTheme.displayLarge?.copyWith(fontSize: 18),
+          style: theme.textTheme.displayLarge?.copyWith(fontSize: 24),
         ),
         actions: [
           _buildAppBarBadge(
@@ -51,7 +53,7 @@ class _CustomerDashBoardScreenState extends State<CustomerDashBoardScreen> {
           ),
           const SizedBox(width: 16),
           _buildAppBarBadge(
-            icon: Icons.notifications_none_outlined,
+            icon: Icons.favorite_border,
             count: '5',
             onTap: () {},
           ),
@@ -84,7 +86,7 @@ class _CustomerDashBoardScreenState extends State<CustomerDashBoardScreen> {
           selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: "Wishlist"),
+            BottomNavigationBarItem(icon: Icon(Icons.category), label: "Categories"),
             BottomNavigationBarItem(icon: Icon(Icons.receipt_long_outlined), label: "Orders"),
             BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: "Profile"),
           ],

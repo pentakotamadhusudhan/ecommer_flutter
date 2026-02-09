@@ -107,7 +107,7 @@ class ProductInfoScreen extends StatelessWidget {
                   // 4. Action Buttons
                   ElevatedButton(
                     onPressed: () {},
-                    child: const Text('ADD TO CART'),
+                    child: const Text('Buy it'),
                   ),
                   const SizedBox(height: 12),
                   OutlinedButton(

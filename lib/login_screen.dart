@@ -63,24 +63,24 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch, // Makes buttons full width
+          // Makes buttons full width
             children: [
-              const SizedBox(height: 60),
-
               // 1. Branding Section
               Center(
                 child: Column(
                   children: [
-                    const Icon(Icons.auto_awesome_mosaic, size: 60, color: AppColors.primary),
-                    const SizedBox(height: 16),
+                    SizedBox(
+
+                        child: Image(image: AssetImage("assets/images/app_logo.png",),fit: BoxFit.cover,)),
                     Text(ConstantString().APP_TITLE, style: textTheme.displayLarge),
-                    const SizedBox(height: 8),
+
                     Text("Welcome back to Style & Flow", style: textTheme.bodyMedium),
+                    SizedBox(height: 10,)
                   ],
                 ),
               ),
 
-              const SizedBox(height: 48),
+
 
               // 2. Social Login Zone
               OutlinedButton.icon(
@@ -88,14 +88,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: const Icon(Icons.apple),
                 label: const Text("Continue with Apple"),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 5),
               OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.g_mobiledata, size: 30),
                 label: const Text("Continue with Google"),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 10),
 
               // 3. Divider
               Row(
@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 10),
 
               // 4. Input Fields
               TextField(
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: AppTheme().inputDecoration(context, "Email or Phone Number"),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               TextField(
                 controller: _passController,
                 obscureText: obscure,
@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 15),
 
               // 6. Main CTA
               ElevatedButton(

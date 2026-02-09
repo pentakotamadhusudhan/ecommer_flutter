@@ -4,6 +4,7 @@ import 'package:local_baba/service/product_service.dart';
 import 'package:local_baba/user_registraion.dart';
 
 import '../model/product_model.dart';
+import '../utils/custom_widgets.dart';
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({super.key});
@@ -248,86 +249,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             itemBuilder: (context, index) {
                               final product = categoryItems[index];
 
-                              return Card(
-                                color: Theme.of(context).cardColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        width: 200,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                                  top: Radius.circular(15)),
-                                          image: DecorationImage(
-                                            image: NetworkImage(product
-                                                    .productImage ??
-                                                'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE='),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            product.productName ?? "",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                          Text(
-                                            product.description ?? "",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                          SizedBox(
-                                            height: 50,
-                                            width: 200,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "\$${product.price}",
-                                                  style: const TextStyle(
-                                                      color: Color(0xFFC5A08E),
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                IconButton(
-                                                  onPressed: () {},
-                                                  icon: Icon(
-                                                    Icons.favorite,
-                                                    // Grabs the color from your textTheme or primaryColor
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .titleMedium
-                                                        ?.color,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              return productCardWidget(
+                                context:context,
+                                product: product
                               );
                             },
                           ),
@@ -343,6 +267,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
         ],
       ),
     );
-    ;
+    
   }
 }
