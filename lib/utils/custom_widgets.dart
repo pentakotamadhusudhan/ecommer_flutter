@@ -26,7 +26,7 @@ Widget productCardWidget(
               const BorderRadius.vertical(
                   top: Radius.circular(15)),
               image: DecorationImage(
-                image: NetworkImage(product
+                image: NetworkImage(product.product!
                     .productImage ??
                     'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE='),
                 fit: BoxFit.cover,
@@ -41,20 +41,23 @@ Widget productCardWidget(
             CrossAxisAlignment.start,
             children: [
               Text(
-                product.productName ?? "",
+                product.product!.productName ?? "",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium,
               ),
-              Text(
-                product.description ?? "",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium,
+              SizedBox(
+                width: 150,
+                child: Text(
+                  product.product!.description ?? "",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall,
+                ),
               ),
               SizedBox(
                 height: 50,
@@ -65,7 +68,7 @@ Widget productCardWidget(
                       .spaceBetween,
                   children: [
                     Text(
-                      "\$${product.price}",
+                      "\$${product.product!.price}",
                       style: const TextStyle(
                           color: Color(0xFFC5A08E),
                           fontWeight:

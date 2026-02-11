@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:local_baba/customer/customer_screen.dart';
 import 'package:local_baba/customer/profile_screen.dart';
-import 'package:local_baba/product_screens/order_screens.dart';
+import 'package:local_baba/product_screens/stores_screen.dart';
 import 'package:local_baba/product_screens/wishlist_screen.dart';
 import 'package:local_baba/utils/constant_string.dart';
 import '../app_style.dart';
@@ -23,7 +23,7 @@ class _CustomerDashBoardScreenState extends State<CustomerDashBoardScreen> {
   final List<Widget> _screens = [
     const CustomerScreen(),
     const CategoryScreen(),
-    const OrdersScreen(),
+    const StoresScreen(),
     const ProfileScreen(),
   ];
 
@@ -87,7 +87,7 @@ class _CustomerDashBoardScreenState extends State<CustomerDashBoardScreen> {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
             BottomNavigationBarItem(icon: Icon(Icons.category), label: "Categories"),
-            BottomNavigationBarItem(icon: Icon(Icons.receipt_long_outlined), label: "Orders"),
+            BottomNavigationBarItem(icon: Icon(Icons.storefront_rounded), label: "Stores"),
             BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: "Profile"),
           ],
         ),

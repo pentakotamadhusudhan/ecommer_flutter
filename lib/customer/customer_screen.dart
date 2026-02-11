@@ -236,6 +236,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                             ),
                           ),
                         ),
+                        // stores and products
 
                         // 3. GridView for products in this category
                         SizedBox(

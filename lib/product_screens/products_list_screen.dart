@@ -5,8 +5,9 @@ import 'package:local_baba/service/product_service.dart';
 import '../utils/custom_widgets.dart';
 
 class ProductsListScreen extends StatefulWidget {
-  final int id;
-  ProductsListScreen({super.key, required this.id});
+  final int? category_id;
+  final int? store_id;
+  ProductsListScreen({super.key, this.category_id, this.store_id});
 
   @override
   State<ProductsListScreen> createState() => _ProductsListScreenState();
@@ -23,7 +24,8 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
         backgroundColor: const Color(0xFFC5A08E), // Branding: Rose Gold
       ),
       body: FutureBuilder<List<ProductsModel>>(
-        future: _productService.fetchProductsByCategory(id: widget.id),
+        future: _productService.fetchProductsByCategory(
+            category_id: widget.category_id, store_id: widget.store_id),
         builder: (context, snapdata) {
           if (snapdata.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

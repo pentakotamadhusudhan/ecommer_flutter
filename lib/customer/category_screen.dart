@@ -50,7 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   return InkWell(
                     onTap: () {
                       print("product select ${products[catIndex].id}");
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsListScreen(id: products[catIndex].id!,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsListScreen(category_id: products[catIndex].id!,)));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
