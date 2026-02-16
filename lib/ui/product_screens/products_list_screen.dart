@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:local_baba/model/product_model.dart';
-import 'package:local_baba/product_screens/product_info_screen.dart';
+
 import 'package:local_baba/service/product_service.dart';
-import '../utils/custom_widgets.dart';
+import 'package:local_baba/ui/product_screens/product_info_screen.dart';
+
+import '../../utils/custom_widgets.dart';
+
 
 class ProductsListScreen extends StatefulWidget {
   final int? category_id;

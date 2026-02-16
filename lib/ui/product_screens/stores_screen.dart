@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_baba/model/stores_models.dart';
-import 'package:local_baba/product_screens/products_list_screen.dart';
 import 'package:local_baba/service/product_service.dart';
+import 'package:local_baba/ui/product_screens/products_list_screen.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});

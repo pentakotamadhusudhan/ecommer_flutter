@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:local_baba/customer/customer_screen.dart';
-import 'package:local_baba/customer/profile_screen.dart';
-import 'package:local_baba/product_screens/stores_screen.dart';
-import 'package:local_baba/product_screens/wishlist_screen.dart';
+
+import 'package:local_baba/ui/customer/profile_screen.dart';
 import 'package:local_baba/utils/constant_string.dart';
-import '../app_style.dart';
-import 'category_screen.dart';
+
+import '../../app_style.dart';
+import '../product_screens/category_screen.dart';
+import '../product_screens/stores_screen.dart';
+import 'dash_board.dart';
 
 class CustomerDashBoardScreen extends StatefulWidget {
   const CustomerDashBoardScreen({super.key});

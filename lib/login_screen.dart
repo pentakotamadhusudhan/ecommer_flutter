@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:local_baba/app_style.dart'; // Ensure this contains your AppTheme
 import 'package:local_baba/service/user_service.dart';
+import 'package:local_baba/ui/customer/customer_home_screen.dart';
 import 'package:local_baba/user_registraion.dart' hide AppColors;
 import 'package:local_baba/utils/constant_string.dart';
-import 'customer/customer_dashboard.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

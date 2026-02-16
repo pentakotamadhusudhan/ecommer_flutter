@@ -2,9 +2,18 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_baba/model/user_model.dart';
-const String baseUrl = "http://192.168.1.3:8000/";
-class ApiService {
 
+const String baseUrl = "http://192.168.1.3:8000";
+// const String baseUrl = "https://dds0rq7n-8000.inc1.devtunnels.ms";
+var headers = {
+  "Accept": "application/json",
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "*",
+  "Access-Control-Allow-Methods": "*",
+  "X-Tunnel-Skip-Anti-Phishing-Page": "true",
+};
+class ApiService {
   static const String loginUrl = "$baseUrl/user/login/";
   static const String registrationUrl = "$baseUrl/user/register/";
 
@@ -14,7 +23,7 @@ class ApiService {
     try {
       final response = await http.post(
         Uri.parse(loginUrl),
-        headers: {"Content-Type": "application/json"},
+        headers: headers,
         body: jsonEncode({"email": email, "password": password}),
       );
       print(response.statusCode);
@@ -23,7 +32,8 @@ class ApiService {
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
         if (data.isNotEmpty) {
-          return User.fromJson(data['data']); // Returns the first user in the list
+          return User.fromJson(
+              data['data']); // Returns the first user in the list
         }
       }
       return null;
@@ -33,7 +43,6 @@ class ApiService {
     }
   }
 
-
   Future<bool> register({
     required String username,
     required String email,
@@ -42,11 +51,11 @@ class ApiService {
     required String gender,
     required String firstName,
     required String lastName,
-}) async {
+  }) async {
     try {
       final response = await http.post(
         Uri.parse(registrationUrl),
-        headers: {"Content-Type": "application/json"},
+        headers: headers,
         body: jsonEncode({
           "username": username,
           "email": email,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:local_baba/model/categories_model.dart';
+import 'package:local_baba/model/product_details_model.dart';
 import 'package:local_baba/service/user_service.dart';
 
 import '../model/product_model.dart';
@@ -13,17 +14,16 @@ class ProductService {
   static const String productsByCategoryUrl =
       baseUrl + "/store/store/products/?";
   static const String storesUrl = baseUrl + "/store/store/stores/";
+  static const String productsDetailUrl  = baseUrl + "/store/store/productdetails/";
 
   Future<List<ProductsModel>> fetchProducts() async {
     try {
       final response = await http.get(
         Uri.parse(productsByCategoryUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: headers,
       );
-
+      print("resp body ${response.body}");
+      print("resp body ${response.statusCode}");
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> decodedBody = jsonDecode(response.body);
 
@@ -51,10 +51,7 @@ class ProductService {
       print(url);
       final response = await http.get(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: headers,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -79,10 +76,7 @@ class ProductService {
       print(url);
       final response = await http.get(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: headers,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -105,10 +99,7 @@ class ProductService {
     try {
       final response = await http.get(
         Uri.parse(getCategoriesUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: headers,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -126,4 +117,33 @@ class ProductService {
       return [];
     }
   }
+
+
+  Future<ProductsDetailsModel?> fetchProductDetailsService({
+    required int products_id
+}) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$productsDetailUrl$products_id"),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> decodedBody = jsonDecode(response.body);
+
+        // Drill down into the 'data' list from your response
+        final Map<String, dynamic> productList = decodedBody['data'];
+
+        return ProductsDetailsModel.fromJson(productList);
+      } else {
+        throw Exception("Failed to load products: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching products: $e");
+      return null;
+    }
+  }
+
+
+
 }

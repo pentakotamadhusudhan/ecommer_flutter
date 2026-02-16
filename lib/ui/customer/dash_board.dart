@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:local_baba/product_screens/product_info_screen.dart';
+
 import 'package:local_baba/service/product_service.dart';
 import 'package:local_baba/user_registraion.dart';
 
-import '../model/product_model.dart';
-import '../utils/custom_widgets.dart';
+import '../../model/product_model.dart';
+import '../../utils/custom_widgets.dart';
+
+
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({super.key});
