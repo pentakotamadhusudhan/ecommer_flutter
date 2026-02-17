@@ -3,15 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:local_baba/service/user_service.dart';
 
+import 'app_style.dart';
+
 // --- STYLES SECTION (The "CSS") ---
-class AppColors {
-  static const Color background = Color(0xFF121212);
-  static const Color surface = Color(0xFF1E1E1E);
-  static const Color primary = Color(0xFFC5A08E); // Rose Gold
-  static const Color textMain = Colors.white;
-  static const Color textSecondary = Colors.grey;
-  static const Color border = Color(0xFF333333);
-}
+
 
 // --- UI SCREEN SECTION ---
 class RegisterScreen extends StatefulWidget {

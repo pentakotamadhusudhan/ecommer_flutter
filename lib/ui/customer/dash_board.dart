@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:local_baba/service/product_service.dart';
 import 'package:local_baba/user_registraion.dart';
 
+import '../../app_style.dart';
 import '../../model/product_model.dart';
 import '../../utils/custom_widgets.dart';
-
-
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({super.key});
@@ -16,6 +15,7 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
+  TextEditingController searchController = TextEditingController();
   final ProductService _productService = ProductService();
   Widget _buildCategoryItem(String title, IconData icon) {
     return Padding(
@@ -43,24 +43,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 2. Search Bar
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search collections...",
-                hintStyle: const TextStyle(color: AppColors.textSecondary),
-                prefixIcon:
-                    const Icon(Icons.search, color: AppColors.textSecondary),
-                filled: true,
-                fillColor: Theme.of(context).cardColor,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-
+          customSearchbar(searchController: searchController, context: context),
           // 3. Category horizontal list
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -253,9 +236,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                               final product = categoryItems[index];
 
                               return productCardWidget(
-                                context:context,
-                                product: product
-                              );
+                                  context: context, product: product);
                             },
                           ),
                         ),
@@ -270,6 +251,5 @@ class _CustomerScreenState extends State<CustomerScreen> {
         ],
       ),
     );
-    
   }
 }

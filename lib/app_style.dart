@@ -15,6 +15,12 @@ class AppColors {
   static const Color lightBg = Color(0xFFF5F5F5);
   static const Color lightSurface = Colors.white;
   static const Color lightInputBorder = Color(0xFFE0E0E0);
+  static const Color background = Color(0xFF121212);
+  static const Color surface = Color(0xFF1E1E1E);
+  static const Color gold = Color(0xFFC5A08E); // Rose Gold
+  static const Color textMain = Colors.white;
+  static const Color textSecondary = Colors.grey;
+  static const Color border = Color(0xFF333333);
 }
 
 

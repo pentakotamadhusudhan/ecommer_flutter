@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_baba/map_screen.dart';
 import 'package:local_baba/service/user_service.dart';
 
 import '../../model/product_details_model.dart';
@@ -145,7 +146,9 @@ class ProductInfoScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> AddMapWidget()));
+                          },
                           child: Text(
                               'VIEW ${data.store?.name?.toUpperCase() ?? "STORE"}'),
                         ),

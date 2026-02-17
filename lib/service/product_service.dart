@@ -14,7 +14,9 @@ class ProductService {
   static const String productsByCategoryUrl =
       baseUrl + "/store/store/products/?";
   static const String storesUrl = baseUrl + "/store/store/stores/";
-  static const String productsDetailUrl  = baseUrl + "/store/store/productdetails/";
+  static const String productsDetailUrl =
+      baseUrl + "/store/store/productdetails/";
+  static const String searchUrl = baseUrl + "/store/search/";
 
   Future<List<ProductsModel>> fetchProducts() async {
     try {
@@ -41,12 +43,16 @@ class ProductService {
   }
 
   Future<List<ProductsModel>> fetchProductsByCategory({
-     int? category_id,
-     int? store_id,
+    int? category_id,
+    int? store_id,
   }) async {
     try {
       String param = "";
-      if(category_id!=null){param= "category_id=$category_id";} else{ param= "store_id=$store_id";}
+      if (category_id != null) {
+        param = "category_id=$category_id";
+      } else {
+        param = "store_id=$store_id";
+      }
       Uri url = Uri.parse("$productsByCategoryUrl${param}");
       print(url);
       final response = await http.get(
@@ -70,14 +76,21 @@ class ProductService {
     }
   }
 
-  Future<List<StoresModel>> fetchStoresService() async {
+  Future<List<StoresModel>> fetchStoresService({String? storeName}) async {
     try {
       Uri url = Uri.parse(storesUrl);
-      print(url);
+      print("store query ${storeName.runtimeType}");
+      if (storeName != "") {
+        url = Uri.parse("$searchUrl?query=$storeName&type=store");
+      } else {
+        url = Uri.parse(storesUrl);
+      }
+      print("url : url : $url");
       final response = await http.get(
         url,
         headers: headers,
       );
+
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> decodedBody = jsonDecode(response.body);
@@ -118,10 +131,8 @@ class ProductService {
     }
   }
 
-
-  Future<ProductsDetailsModel?> fetchProductDetailsService({
-    required int products_id
-}) async {
+  Future<ProductsDetailsModel?> fetchProductDetailsService(
+      {required int products_id}) async {
     try {
       final response = await http.get(
         Uri.parse("$productsDetailUrl$products_id"),
@@ -143,7 +154,4 @@ class ProductService {
       return null;
     }
   }
-
-
-
 }
