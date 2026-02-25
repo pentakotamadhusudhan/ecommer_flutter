@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_baba/model/user_model.dart';
 
-const String baseUrl = "http://192.168.1.3:8000";
+const String baseUrl = "http://192.168.1.6:8000";
 // const String baseUrl = "https://dds0rq7n-8000.inc1.devtunnels.ms";
 var headers = {
   "Accept": "application/json",
@@ -15,7 +15,7 @@ var headers = {
 };
 class ApiService {
   static const String loginUrl = "$baseUrl/user/login/";
-  static const String registrationUrl = "$baseUrl/user/register/";
+  static const String registrationUrl = "$baseUrl/u ser/register/";
 
   Future<User?> login(String email, String password) async {
     print(email);

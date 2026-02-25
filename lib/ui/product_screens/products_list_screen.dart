@@ -6,7 +6,6 @@ import 'package:local_baba/ui/product_screens/product_info_screen.dart';
 
 import '../../utils/custom_widgets.dart';
 
-
 class ProductsListScreen extends StatefulWidget {
   final int? category_id;
   final int? store_id;
@@ -73,7 +72,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                       childAspectRatio:
-                          0.75, // Adjust this to fit your card height
+                          0.69, // Adjust this to fit your card height
                     ),
                     itemBuilder: (context, index) {
                       return productCardWidget(
