@@ -23,6 +23,7 @@ Widget productCardWidget({
     },
     child: Container(
       width: 150,
+
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),

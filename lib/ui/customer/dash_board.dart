@@ -225,7 +225,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
                         // 3. GridView for products in this category
                         SizedBox(
-                          height: 280,
+                          height: 250,
                           child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
